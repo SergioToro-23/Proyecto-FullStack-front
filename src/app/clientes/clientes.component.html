@@ -1,0 +1,46 @@
+
+<div class="card text-bg-warning mb-3 border-primary" >
+    <div class="card-header">Clientes</div>
+    <div class="card-body">
+      <h5 class="card-title">Listado de Clientes</h5>
+
+<div class="my-2 text-left">   <!--directiva routerlink, view helper, permite crear links o 
+    enlaces hacia nuestras rutas, internas del proyecto, rutas mapeadas al componente y que estan registradas en routes -->
+    <button class="btn btn-rounded btn-primary" type="button" [routerLink] = "['/clientes/form']">Crear Cliente</button>
+</div>
+
+<div *ngIf="clientes.length==0" class="alert alert-info"><!--mostrar alert si no hay info-->
+    no hay registros en la vase de datos!
+</div>
+
+<table class="table table-bordered table-striped" *ngIf="clientes.length>0"><!--la directiva ng if y preguntar que le largo de esta lista sea mayor que 0 y si no hay anda mostrar un mensaje-->
+    <thead>
+        <tr>
+            <th>id</th>
+            <th>nombre</th>
+            <th>apellidos</th>
+            <th>email</th>
+            <th>fecha</th>    
+            <th>editar</th>
+            <th>eliminar</th>        
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let cliente of clientes">
+            <td>{{cliente.id}}</td>
+            <td>{{cliente.nombre}}</td>
+            <td>{{cliente.apellido}}</td>
+            <td>{{cliente.email}}</td>
+            <td>{{cliente.createAt}}</td>
+            <td>
+                <button type="button" name="button" [routerLink]="['/clientes/form', cliente.id]" class="btn btn-rounded btn-primary" >editar</button>
+            </td>
+            <td>
+                <button type="button" name="eliminar" (click)='delete(cliente)' class="btn btn-rounded btn-danger">eliminar</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+    </div>
+  </div>

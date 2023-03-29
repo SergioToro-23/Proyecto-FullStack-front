@@ -1,0 +1,16 @@
+/* You can add global styles to this file, and also import other style files */
+html{
+    position:relative;/*definir una posicion relativa para el documento completo(doc html), definir al padre en una posicion respecto al flujo normal de la pagina*/
+    /*asi el footer, como tiene una posicion absoluta no esta dentro del flujo normal de la pagina, pero toma como referencia el elemento padre que contenga la
+     posicion relativa mas cercana, osea el doc html, y se posiciona respecto al elemento padre*/
+    min-height: 100%;/*altura minima del 100%*/
+}
+
+body{
+    margin-bottom:60px;
+    /*margen butotn que tenga la misma altura que el footer en pixeles*/    
+}
+
+.wrap{/*una clase que se llama en app.component.html del footer*/
+    padding-bottom:60px;
+}
