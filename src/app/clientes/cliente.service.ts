@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { CLIENTES } from './clientes.json';//importa desde un json la data
 import { Cliente } from './cliente';
-import { Observable } from 'rxjs';//ESTO ES PARA USAR STREAM, REACTIVE EXTENTION
-import { of } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';//cathc error, operador que intercepta el observable o flujo en busqueda de fallos, y si falla se obitenen este objeto dentro del operador .pipe()
+import { asapScheduler, Observable, throwError } from 'rxjs';//ESTO ES PARA USAR STREAM, REACTIVE EXTENTION, throw error para retornar erroes observables
+import { catchError } from 'rxjs/operators';//cathc error, operador que intercepta el observable o flujo en busqueda de fallos, y si falla se obitenen este objeto dentro del operador .pipe()
 import { HttpClient, HttpHeaders } from '@angular/common/http';//para trabajar http
+import swal from 'sweetalert2';
+import { Router } from '@angular/router';//redireccionar
 
 //aca es donde estamos trabajando con nuestro datos, es donde estamos obteniendo la logica de negocio desde el backend
 
@@ -16,8 +17,8 @@ export class ClienteService {//ESTA  clase es para majear los datos de los clien
   private urlEndPoint: string = 'http://localhost:8080/api/clientes'//ubicacion del back
   private httpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' })//las cabeceras
 
-  constructor(private http: HttpClient) { }//definimos la variable http y se inyecta la referencia, para REST
-
+  constructor(private http: HttpClient, private router: Router) { }//definimos la variable http y se inyecta la referencia, para REST
+  //definimos la variable router para redireccionar  
   /* MODO NORMAL SINCRONO
     getClientes(): Cliente[] {
       return CLIENTES;
@@ -42,7 +43,16 @@ export class ClienteService {//ESTA  clase es para majear los datos de los clien
   }
 
   getCliente(id: any): Observable<Cliente> {  //GET solo un cliente
-    return this.http.get<Cliente>(`${this.urlEndPoint}/${id}`)//a los argumentos le añade el id ya que asi esta el servicio
+    return this.http.get<Cliente>(`${this.urlEndPoint}/${id}`).pipe(//a los argumentos le añade el id ya que asi esta el servicio
+      catchError(e => { //aca obtenemos el error, lo recibimos por argumento en la funcion de =>(osea una func anonima)
+        //el reconoce el error a traves del estado de la respuesta: 200, 401, 500
+        this.router.navigate(['/clientes'])//redirige a /clientes cuando ocurre error
+        console.error(e.error.mensaje);
+        swal.fire('Error al editar', e.error.mensaje, 'error');
+        return throwError(() => e);//retorna el error observable
+      })
+
+    );
   }
 
   update(cliente: Cliente): Observable<Cliente> {  //PUT solo un cliente
