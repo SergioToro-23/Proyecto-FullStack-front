@@ -62,7 +62,7 @@ export class ClienteService {//ESTA  clase es para majear los datos de los clien
     );
   }
 
-  update(cliente: Cliente): Observable<Cliente> {  //PUT solo un cliente
+  update(cliente: Cliente): Observable<Cliente> {  //PUT solo un cliente 
     return this.http.put<Cliente>(`${this.urlEndPoint}/${cliente.id}`, cliente, { headers: this.httpHeaders }).pipe(//envia tres parametros, id, el objeto cliente, y cabecera
       catchError(e => {
         console.error(e.error.mensaje);
