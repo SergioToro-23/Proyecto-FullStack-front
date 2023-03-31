@@ -39,7 +39,14 @@ export class ClienteService {//ESTA  clase es para majear los datos de los clien
 
   //retorna un observable cliente, el objeto cliente que se creo en el apiRest
   create(cliente: Cliente): Observable<Cliente> {  //CREAR
-    return this.http.post<Cliente>(this.urlEndPoint, cliente, { headers: this.httpHeaders })
+    return this.http.post<Cliente>(this.urlEndPoint, cliente, { headers: this.httpHeaders }).pipe(
+      catchError(e => {
+        console.error(e.error.mensaje);
+        swal.fire(e.error.mensaje, e.error.error, 'error');
+        return throwError(() => e);
+      })
+
+    );
   }
 
   getCliente(id: any): Observable<Cliente> {  //GET solo un cliente
@@ -56,11 +63,24 @@ export class ClienteService {//ESTA  clase es para majear los datos de los clien
   }
 
   update(cliente: Cliente): Observable<Cliente> {  //PUT solo un cliente
-    return this.http.put<Cliente>(`${this.urlEndPoint}/${cliente.id}`, cliente, { headers: this.httpHeaders })//envia tres parametros, id, el objeto cliente, y cabecera
+    return this.http.put<Cliente>(`${this.urlEndPoint}/${cliente.id}`, cliente, { headers: this.httpHeaders }).pipe(//envia tres parametros, id, el objeto cliente, y cabecera
+      catchError(e => {
+        console.error(e.error.mensaje);
+        swal.fire(e.error.mensaje, e.error.error, 'error');
+        return throwError(() => e);
+      })
+
+    );
   }
 
   delete(id: number): Observable<Cliente> {  //DELETE solo un cliente
-    return this.http.delete<Cliente>(`${this.urlEndPoint}/${id}`, { headers: this.httpHeaders })
+    return this.http.delete<Cliente>(`${this.urlEndPoint}/${id}`, { headers: this.httpHeaders }).pipe(
+      catchError(e => {
+        console.error(e.error.mensaje);
+        swal.fire(e.error.mensaje, e.error.error, 'error');
+        return throwError(() => e);
+      })
+    )
   }
 
 }
