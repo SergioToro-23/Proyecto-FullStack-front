@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { CLIENTES } from './clientes.json';//importa desde un json la data
 import { Cliente } from './cliente';
 import { asapScheduler, Observable, throwError } from 'rxjs';//ESTO ES PARA USAR STREAM, REACTIVE EXTENTION, throw error para retornar erroes observables
-import { catchError } from 'rxjs/operators';//cathc error, operador que intercepta el observable o flujo en busqueda de fallos, y si falla se obitenen este objeto dentro del operador .pipe()
+import { catchError, map } from 'rxjs/operators';//cathc error, operador que intercepta el observable o flujo en busqueda de fallos, y si falla se obitenen este objeto dentro del operador .pipe()
 import { HttpClient, HttpHeaders } from '@angular/common/http';//para trabajar http
 import swal from 'sweetalert2';
 import { Router } from '@angular/router';//redireccionar
@@ -38,8 +38,9 @@ export class ClienteService {//ESTA  clase es para majear los datos de los clien
   //los observadores se suscriben al sujeto(el observable), y cuando cambia el estado, se notifica a los observadores y se dispara algun tipo de evento
 
   //retorna un observable cliente, el objeto cliente que se creo en el apiRest
-  create(cliente: Cliente): Observable<any> {  //CREAR, retorna cualquier cosa
-    return this.http.post<any>(this.urlEndPoint, cliente, { headers: this.httpHeaders }).pipe(
+  create(cliente: Cliente): Observable<Cliente> {  //CREAR, retorna cualquier cosa
+    return this.http.post(this.urlEndPoint, cliente, { headers: this.httpHeaders }).pipe(
+      map((response: any) => response.cliente as Cliente),
       catchError(e => {
         console.error(e.error.mensaje);
         swal.fire(e.error.mensaje, e.error.error, 'error');
@@ -62,8 +63,8 @@ export class ClienteService {//ESTA  clase es para majear los datos de los clien
     );
   }
 
-  update(cliente: Cliente): Observable<Cliente> {  //PUT solo un cliente 
-    return this.http.put<Cliente>(`${this.urlEndPoint}/${cliente.id}`, cliente, { headers: this.httpHeaders }).pipe(//envia tres parametros, id, el objeto cliente, y cabecera
+  update(cliente: Cliente): Observable<any> {  //PUT solo un cliente 
+    return this.http.put<any>(`${this.urlEndPoint}/${cliente.id}`, cliente, { headers: this.httpHeaders }).pipe(//envia tres parametros, id, el objeto cliente, y cabecera
       catchError(e => {
         console.error(e.error.mensaje);
         swal.fire(e.error.mensaje, e.error.error, 'error');

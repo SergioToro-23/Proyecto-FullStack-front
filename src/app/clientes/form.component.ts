@@ -33,10 +33,10 @@ export class FormComponent implements OnInit {
 
   public create(): void {
     this.clienteService.create(this.cliente).subscribe(//envia el objeto de la clase con el objeto de cliente service inyectado
-      json => { //respuesta y alguna accion, y redirigir, mediante el nombre json, accede al map que envia springboot
+      cliente => { //respuesta y alguna accion, y redirigir, mediante el nombre json, accede al map que envia springboot
         this.router.navigate(['/clientes'])
-        //swal.fire('Nuevo cliente', `Cliente ${json.cliente.nombre} creado con éxito!`, 'success')//y aca saca el cliente y el nombre del map json que viene
-        swal.fire('Nuevo cliente', `${json.mensaje}: ${json.cliente.nombre}`, 'success')//mas optimizado, usa el mensaje que viene en el map
+        swal.fire('Nuevo cliente', `Cliente ${cliente.nombre} creado con éxitos!`, 'success')//y aca saca el cliente y el nombre del map json que viene
+        //swal.fire('Nuevo cliente', `${json.mensaje}: ${json.cliente.nombre}`, 'success')//mas optimizado, usa el mensaje que viene en el map
       }//una vez creado el objeto retorna un redirect a la vista de todos los clientes
     )
 
@@ -46,9 +46,9 @@ export class FormComponent implements OnInit {
 
   update(): void {
     this.clienteService.update(this.cliente)//llama a el metodo update de la clase clienteService y le envia el objeto cliente
-      .subscribe(cliente => {//lo suscribimos,registramos el observador, osea la respuesta, osea el cliente, una vez que se actualiza va lo de abajo
+      .subscribe(json => {//lo suscribimos,registramos el observador, osea la respuesta, osea el cliente, una vez que se actualiza va lo de abajo
         this.router.navigate(['/clientes'])//redirige al listado de clientes
-        swal.fire('Cliente Actualizado', `Cliente ${cliente.nombre} actualizado con éxito!`, 'success')//y muestra un mensaje de exitoso
+        swal.fire('Cliente Actualizado', `${json.mensaje}: ${json.cliente.nombre}`, 'success')//y muestra un mensaje de exitoso
       })
   }
 
