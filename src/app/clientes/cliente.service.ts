@@ -38,8 +38,8 @@ export class ClienteService {//ESTA  clase es para majear los datos de los clien
   //los observadores se suscriben al sujeto(el observable), y cuando cambia el estado, se notifica a los observadores y se dispara algun tipo de evento
 
   //retorna un observable cliente, el objeto cliente que se creo en el apiRest
-  create(cliente: Cliente): Observable<Cliente> {  //CREAR
-    return this.http.post<Cliente>(this.urlEndPoint, cliente, { headers: this.httpHeaders }).pipe(
+  create(cliente: Cliente): Observable<any> {  //CREAR, retorna cualquier cosa
+    return this.http.post<any>(this.urlEndPoint, cliente, { headers: this.httpHeaders }).pipe(
       catchError(e => {
         console.error(e.error.mensaje);
         swal.fire(e.error.mensaje, e.error.error, 'error');
