@@ -1,7 +1,12 @@
 <app-header></app-header>
-<div class="container my-3 wrap"><!--llama clase wrap del syles.css global-->
-  
-<router-outlet></router-outlet><!--es una directiva de angular utilziada para indicar donde se van a renderizar el contenido de cada ruta-->
+<div class="container my-3 wrap">
+  <!--llama clase wrap del syles.css global-->
+
+  <div>{{title}}</div>
+
+  <router-outlet></router-outlet>
+  <!--es una directiva de angular utilziada para indicar donde se van a renderizar el contenido de cada ruta-->
 
 </div>
+<div>{{curso}}</div>
 <app-footer></app-footer>
