@@ -19,12 +19,12 @@ export class FormComponent implements OnInit {
     private activatedRoute: ActivatedRoute) { }//inyecta la clase service, e inyecta router
 
   ngOnInit(): void {
-    this.cargarCliente()
+    this.cargarCliente()//aca carga la info del cliente repectivo al id de la url dentro del objeto cliente de este componente
   }
 
   cargarCliente(): void {
     this.activatedRoute.params.subscribe(params => {//un observador que esta observando cuando le pasemos el parametro
-      let id = params['id']
+      let id = params['id']//asigna el valor del parámetro id de la URL a la variable id.
       if (id) {
         this.clienteService.getCliente(id).subscribe((cliente) => this.cliente = cliente)//coje el id y lo asigna al objeto
       }

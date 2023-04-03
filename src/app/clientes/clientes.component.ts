@@ -18,7 +18,7 @@ export class ClientesComponent implements OnInit {
     //this.clientes = this.clienteService.getClientes();   //INICIALIZA el atributo clientes y le asigna la constante dentro del archivo CLIENTES.JSON
     //forma reactiva con stream
     this.clienteService.getClientes().subscribe(//suscribir o registrar el observador a los clientes
-      CLIENTES => this.clientes = CLIENTES//function anonima, asigna en el atributo clientes, el valor que se recibe desde clientes service
+      clientes => this.clientes = clientes//function anonima, asigna en el atributo clientes, el valor que se recibe desde clientes service
     );//osea el listado de clientes, cada vez que hay cambios
 
   }
@@ -45,7 +45,7 @@ export class ClientesComponent implements OnInit {
       if (result.isConfirmed) {
         this.clienteService.delete(cliente.id).subscribe(
           response => {//cuando responda hace esto
-            this.clientes = this.clientes.filter(cli => cli !== cliente)//si cada uno de los clientes de la lista es distinto al que vamos a eliminar, lo muestra en la lista                  
+            this.clientes = this.clientes.filter(clientes => clientes !== cliente)//dice que muestre en la tabla, clientes que sean direntes al cliente recien eliminado
             swalWithBootstrapButtons.fire(
               'Deleted!',
               `Cliente ${cliente.nombre} eliminado con exito.`,
