@@ -1,35 +1,71 @@
 <div class="card bg-dark text-white">
-    <div class="card-header">{{titulo}}</div>
-    <div class="card-body">
-        <form><!--(ngSubmit)="create()"--><!--invoca el metodo create atravez de la directiba submit-->
-            <div class="form-group row">
-                <label for="nombre" class="col-form-label col-sm-2">Nombre</label>
-                <div class="col-sm-6">
-                    <input type="text" class="form-control" [(ngModel)]="cliente.nombre" name="nombre">
-                </div><!--y hace un binding con model de los campos a los valores del atributo-->
+  <div class="card-header">{{titulo}}</div>
+  <div class="card-body">
+    <form #clienteForm="ngForm">
+      <!--variable global en el form para validar errores-->
+      <!--(ngSubmit)="create()"-->
+      <!--invoca el metodo create atravez de la directiba submit-->
+      <div class="form-group row">
+        <label for="nombre" class="col-form-label col-sm-2">Nombre</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" [(ngModel)]="cliente.nombre" name="nombre" required minlength="4"
+            #nombre="ngModel"><br>
+          <!--required es un validador, y #nombre es un objeto que contiene los mensajes de error-->
+          <div class="alert alert-danger" *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)">
+            <!-- dirty muestra error mientras escribes, y touched al finalizar-->
+            <div *ngIf="nombre.errors?.['required']">
+              <!--muestra el contenedor cuando falla requerido-->
+              Nombre es requerido
             </div>
-            <div class="form-group row">
-                <label for="apellido" class="col-form-label col-sm-2">Apellido</label>
-                <div class="col-sm-6">
-                    <input type="text" class="form-control" [(ngModel)]="cliente.apellido" name="apellido">
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="email" class="col-form-label col-sm-2">Email</label>
-                <div class="col-sm-6">
-                    <input type="text" class="form-control" [(ngModel)]="cliente.email" name="email" />
-                </div>
+            <div *ngIf="nombre.errors?.['minlength']">
+              <!--muestra el contenedor cuando falla requerido-->
+              Nombre debe tener almenos 4 caracteres
             </div>
 
-            <div class="form-group row">
-                <div class="col-sm-6">
-                    <button class="btn btn-primary" role="button" (click)='create()' *ngIf="!cliente.id else elseBlock">Crear</button>
-                    <!--llama al metodo create en click, ademas si el id del cliente no existe se vuelve boton editar-->
-                    <ng-template #elseBlock>
-                        <button class="btn btn-primary" role="button" (click)='update()' >Editar</button>
-                    </ng-template>                    
-                </div>
+          </div>
+        </div>
+        <!--y hace un binding con model de los campos a los valores del atributo-->
+      </div>
+      <div class="form-group row">
+        <label for="apellido" class="col-form-label col-sm-2">Apellido</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" [(ngModel)]="cliente.apellido" name="apellido" required
+            #apellido="ngModel"><br>
+          <div class="alert alert-danger" *ngIf="apellido.invalid && (apellido.dirty || apellido.touched)">
+            <div *ngIf="apellido.errors?.['required']">
+              appellido es requerido
             </div>
-        </form>
-    </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="email" class="col-form-label col-sm-2">Email</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" [(ngModel)]="cliente.email" name="email" required email
+            #email="ngModel"><br>
+          <div class="alert alert-danger" *ngIf="email.invalid && (email.dirty || email.touched)">
+            <div *ngIf="email.errors?.['required']">
+              email es requerido
+            </div>
+            <div *ngIf="email.errors?.['email']">
+              email debe tener formato valido
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-sm-6">
+          <button class="btn btn-primary" role="button" (click)='create()' *ngIf="!cliente.id else elseBlock"
+            [disabled]="!clienteForm.form.valid">Crear</button>
+          <!--valida con la variable global clienteForm que no hayan errores-->
+          <!--llama al metodo create en click, ademas si el id del cliente no existe se vuelve boton editar-->
+          <ng-template #elseBlock>
+            <button class="btn btn-primary" role="button" (click)='update()'
+              [disabled]="!clienteForm.form.valid">Editar</button>
+          </ng-template>
+        </div>
+      </div>
+    </form>
+  </div>
 </div>
