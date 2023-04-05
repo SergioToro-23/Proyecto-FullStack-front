@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Cliente } from './cliente';
 import { ClienteService } from './cliente.service';
 import Swal from 'sweetalert2';
+import {tap} from 'rxjs/operators'
 
 @Component({
   selector: 'app-clientes',
@@ -17,9 +18,17 @@ export class ClientesComponent implements OnInit {
     //forma sincrona sin ser reactivo
     //this.clientes = this.clienteService.getClientes();   //INICIALIZA el atributo clientes y le asigna la constante dentro del archivo CLIENTES.JSON
     //forma reactiva con stream
-    this.clienteService.getClientes().subscribe(//suscribir o registrar el observador a los clientes
-      clientes => this.clientes = clientes//function anonima, asigna en el atributo clientes, el valor que se recibe desde clientes service
-    );//osea el listado de clientes, cada vez que hay cambios
+    this.clienteService.getClientes().pipe(//permite hacer cosas en el flujo y modificarlo
+      tap(clientes => {//permite hacer cosas, recibe de service un objeto tipo Cliente[]
+        console.log("tap 3 de clientes component")
+        clientes.forEach(cliente => {//lo itera
+          console.log(cliente.nombre)          
+        });
+        this.clientes = clientes//lo asigna el arreglo a la variable de este componente que se llama clientes
+      })
+    ).subscribe();//suscribir o registrar el observador a los clientes
+      //(clientes => this.clientes = clientes) funcion anonima, asigna en el atributo clientes, el valor que se recibe desde clientes service
+    //osea el listado de clientes, cada vez que hay cambios
 
   }
 

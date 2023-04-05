@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';//la constante para fecha
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
@@ -11,7 +11,10 @@ import { RouterModule, Routes } from '@angular/router';//IMPLEMENTACION DE RUTAS
 import { HttpClientModule } from '@angular/common/http';//para comunicarse REST
 import { FormComponent } from './clientes/form.component';//importa el componente
 import { FormsModule } from '@angular/forms';//importa formularios
+import { registerLocaleData } from '@angular/common';
+import localeEs from '@angular/common/locales/es';//para tener dates globales en español
 
+registerLocaleData(localeEs, 'es')//registro idioma español para las fechas
 
 const routes: Routes = [//una constante que tiene un arreglo con las rutas tipo Routes
   { path: '', redirectTo: '/clientes', pathMatch: 'full' },//el home '' va a clientes, y hace un match completo, osea va a la 3era opcion
@@ -36,7 +39,7 @@ const routes: Routes = [//una constante que tiene un arreglo con las rutas tipo 
     FormsModule,//se importa form module, se registra el modulo para trabajar con formularios
     RouterModule.forRoot(routes)//se importan las rutas    
   ],
-  providers: [ClienteService],//aca se registran los servicios
+  providers: [ClienteService, {provide: LOCALE_ID, useValue: 'es'}],//aca se registran los servicios, y se esta registrando una constante
   bootstrap: [AppComponent]
 })
 export class AppModule { }
